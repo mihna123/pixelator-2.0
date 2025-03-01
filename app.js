@@ -48,7 +48,7 @@ setInterval(() => {
 	draw([layer]);
 }, 50);
 
-// Utility functions
+// Utility functions and variables
 
 let mousePressed = false;
 let selectedLayer = layer;
@@ -56,6 +56,7 @@ let selectedColor = "#000000";
 let selectedTool = "pen";
 const pastClick = [0, 0];
 let pastTempLine = [];
+let pastTempSquare = [];
 
 /**
  * @param {any[][][]} layers
@@ -111,6 +112,7 @@ function onMouseDown(e) {
 function onMouseUp(e) {
 	mousePressed = false;
 	pastTempLine = [];
+	pastTempSquare = [];
 }
 
 /**
@@ -128,6 +130,7 @@ function onMouseMove(e) {
 			colorLineUnderMouse(e);
 			break;
 		case "square":
+			colorSquareUnderMouse(e);
 			break;
 	}
 }
@@ -165,6 +168,31 @@ function calculateLine(x1, y1, x2, y2) {
 	return points;
 }
 
+/**
+ * Calculates a square between two points and returns the pixel array
+ *
+ * @param {Numver} x1
+ * @param {Number} y1
+ * @param {Number} x2
+ * @param {Number} y2
+ * @returns {Number[][]}
+ * */
+function calculateRectangle(x1, y1, x2, y2) {
+	// Ensure proper ordering of coordinates
+	const minX = Math.min(x1, x2);
+	const maxX = Math.max(x1, x2);
+	const minY = Math.min(y1, y2);
+	const maxY = Math.max(y1, y2);
+
+	// Calculate all four sides including endpoints
+	const top = calculateLine(minX, maxY, maxX, maxY); // →
+	const right = calculateLine(maxX, maxY, maxX, minY); // ↓
+	const bottom = calculateLine(maxX, minY, minX, minY); // ←
+	const left = calculateLine(minX, minY, minX, maxY); // ↑
+
+	// Remove duplicate points at corners
+	return [...top, ...right.slice(1), ...bottom.slice(1), ...left.slice(1)];
+}
 /**
  * @param {MouseEvent} e
  * */
@@ -221,6 +249,35 @@ function colorLineUnderMouse(e) {
 	}
 }
 
+/**
+ * @param {MouseEvent} e
+ * */
+function colorSquareUnderMouse(e) {
+	const canvasRect = canvas.getBoundingClientRect();
+	const canvasX = e.x - canvasRect.x;
+	const canvasY = e.y - canvasRect.y;
+	const pixelX = Math.floor(canvasX / PIXEL_WIDTH);
+	const pixelY = Math.floor(canvasY / PIXELS_HEIGHT);
+	if (pixelX >= PIXELS_X || pixelY >= PIXELS_Y) return;
+
+	// Generate a new line
+	const square = calculateRectangle(...pastClick, pixelX, pixelY);
+
+	// Remove the old square
+	if (pastTempSquare.length > 0) {
+		for (const { x, y, color } of pastTempSquare) {
+			selectedLayer[x][y].color = color;
+		}
+	}
+	pastTempSquare = [];
+
+	// Draw the new square and memorise it for removal
+	for (const [x, y] of square) {
+		pastTempSquare.push({ x, y, color: selectedLayer[x][y].color });
+		selectedLayer[x][y].color = selectedColor;
+	}
+}
+
 // Event listeners
 
 document.addEventListener("mouseup", onMouseUp);
@@ -228,9 +285,29 @@ document.addEventListener("mouseout", onMouseUp);
 canvas.addEventListener("mousedown", onMouseDown);
 canvas.addEventListener("mousemove", onMouseMove);
 
-penTool.onclick = () => (selectedTool = "pen");
-lineTool.onclick = () => (selectedTool = "line");
-squareTool.onclick = () => (selectedTool = "square");
+function toggleToolClass() {
+	for (var tool of [penTool, lineTool, squareTool]) {
+		tool.classList.remove("bg-gray-400");
+		tool.classList.add("bg-gray-300");
+	}
+}
+
+penTool.onclick = () => {
+	selectedTool = "pen";
+	toggleToolClass();
+	penTool.classList.add("bg-gray-400");
+};
+
+lineTool.onclick = () => {
+	selectedTool = "line";
+	toggleToolClass();
+	lineTool.classList.add("bg-gray-400");
+};
+squareTool.onclick = () => {
+	selectedTool = "square";
+	toggleToolClass();
+	squareTool.classList.add("bg-gray-400");
+};
 
 blueBrush.onclick = () => (selectedColor = "#4a7fb5");
 redBrush.onclick = () => (selectedColor = "#b54a4a");
