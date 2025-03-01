@@ -6,7 +6,7 @@
 
     <meta charset="UTF-8" />
 
-    <title>Hello, world!</title>
+    <title>Pixelator 2.0</title>
 
     <meta name="viewport" content="width=device-width,initial-scale=1" />
 
@@ -14,15 +14,28 @@
 
     <link rel="icon" href="favicon.png">
 
-    <link href="./output.css" rel="stylesheet">
+    <link href="./style.css" rel="stylesheet">
 </head>
 
 <body>
 
     <h1 class="text-2xl ml-2"><b>Pixelator 2.0</b></h1>
-    <canvas id="canvasElement" class="border-2 m-2 rounded border-black900" width="300" height="300">
-        Your browser does not support the canvas element
-    </canvas>
+    <div class="flex justify-center">
+        <div class="border-2 rounded border-black m-2 flex flex-col h-fit">
+            <button class="border rounded bg-gray-300 m-1 hover:bg-gray-400 p-2" id="pen-tool">Pen</button>
+            <button class="border rounded bg-gray-300 m-1 hover:bg-gray-400 p-2" id="line-tool">Line</button>
+            <button class="border rounded bg-gray-300 m-1 hover:bg-gray-400 p-2" id="square-tool">Square</button>
+        </div>
+        <div class="border-2 rounded border-black m-2 flex flex-col h-fit">
+            <button class="border rounded hover:bg-blue-400 bg-blue-300 m-1 p-2" id="blue-brush"></button>
+            <button class="border rounded hover:bg-red-400 bg-red-300 m-1 p-2" id="red-brush"></button>
+            <button class="border rounded hover:bg-gray-200 bg-white m-1 p-2" id="white-brush"></button>
+            <button class="border rounded hover:bg-gray-800 bg-black m-1 p-2" id="black-brush"></button>
+        </div>
+        <canvas id="canvasElement" class="border-2 m-2 rounded border-black" width="600" height="600">
+            Your browser does not support the canvas element
+        </canvas>
+    </div>
 
     <script src="app.js"></script>
 
