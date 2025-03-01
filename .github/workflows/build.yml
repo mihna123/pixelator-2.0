@@ -1,0 +1,10 @@
+name: Build tailwind
+
+on: push
+
+jobs:
+  build-tailwind:
+    runs-on: ubuntu-latest
+    steps:
+      - name: build project
+        run: npm install && mkdir build && npx @tailwindcss/cli -i input.css -o build/style.css && cp app.js index.html ./build
