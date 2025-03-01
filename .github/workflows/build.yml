@@ -1,10 +1,16 @@
 name: Build tailwind
 
-on: push
+on: [push, pull_request]
 
 jobs:
-  build-tailwind:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: build project
-        run: npm install && mkdir build && npx @tailwindcss/cli -i input.css -o build/style.css && cp app.js index.html ./build
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: npm install
+    - name: Build Tailwind CSS
+      run: mkdir build && npx @tailwindcss/cli -i input.css -o build/style.css
+    - name: Copy files
+      run: cp app.js index.html ./build
