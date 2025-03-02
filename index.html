@@ -22,7 +22,7 @@
     <h1 class="text-2xl ml-2"><b>Pixelator 2.0</b></h1>
     <div class="flex justify-center">
         <div class="border-2 rounded border-black m-2 flex flex-col h-fit">
-            <button class="flex justify-center border rounded bg-gray-300 m-1 hover:bg-gray-400 p-2" id="pen-tool">
+            <button class="flex justify-center border rounded bg-gray-400 m-1 hover:bg-gray-400 p-2" id="pen-tool">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                     <path fill="currentColor"
                         d="M22 7.24a1 1 0 0 0-.29-.71l-4.24-4.24a1 1 0 0 0-.71-.29a1 1 0 0 0-.71.29l-2.83 2.83L2.29 16.05a1 1 0 0 0-.29.71V21a1 1 0 0 0 1 1h4.24a1 1 0 0 0 .76-.29l10.87-10.93L21.71 8a1.19 1.19 0 0 0 .22-.33a1 1 0 0 0 0-.24a.7.7 0 0 0 0-.14ZM6.83 20H4v-2.83l9.93-9.93l2.83 2.83ZM18.17 8.66l-2.83-2.83l1.42-1.41l2.82 2.82Z" />
@@ -51,12 +51,9 @@
                         clip-rule="evenodd" />
                 </svg>
             </button>
-        </div>
-        <div class="border-2 rounded border-black m-2 flex flex-col h-fit">
-            <button class="border rounded hover:bg-blue-400 bg-blue-300 m-1 p-2" id="blue-brush"></button>
-            <button class="border rounded hover:bg-red-400 bg-red-300 m-1 p-2" id="red-brush"></button>
-            <button class="border rounded hover:bg-gray-200 bg-white m-1 p-2" id="white-brush"></button>
-            <button class="border rounded hover:bg-gray-800 bg-black m-1 p-2" id="black-brush"></button>
+            <div class="border-2 rounded border-black m-1 flex flex-col h-fit">
+                <input class="w-10" type="color" id="color-picker" value="#ff0000" />
+            </div>
         </div>
         <canvas id="canvasElement" class="border-2 m-2 rounded border-black" width="600" height="600">
             Your browser does not support the canvas element

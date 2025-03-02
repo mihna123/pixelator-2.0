@@ -4,17 +4,8 @@ const canvas = document.getElementById("canvasElement");
 /** @type {CanvasRenderingContext2D} */
 const ctx = canvas.getContext("2d");
 
-/** @type {HTMLButtonElement} */
-const blueBrush = document.getElementById("blue-brush");
-
-/** @type {HTMLButtonElement} */
-const redBrush = document.getElementById("red-brush");
-
-/** @type {HTMLButtonElement} */
-const whiteBrush = document.getElementById("white-brush");
-
-/** @type {HTMLButtonElement} */
-const blackBrush = document.getElementById("black-brush");
+/** @type {HTMLInputElement} */
+const colorPicker = document.getElementById("color-picker");
 
 /** @type {HTMLButtonElement} */
 const penTool = document.getElementById("pen-tool");
@@ -64,7 +55,7 @@ let mousePressed = false;
 let selectedLayer = layer;
 
 /** Color we are currently using to edit with */
-let selectedColor = "#000000";
+let selectedColor = colorPicker.value;
 
 /**
  * Tool we are editing the selected layer with currently.
@@ -455,6 +446,7 @@ function getPixelXY(e) {
 	const pixelY = Math.floor(canvasY / PIXELS_HEIGHT);
 	return [pixelX, pixelY];
 }
+
 // Event listeners
 
 document.addEventListener("mouseup", onMouseUp);
@@ -468,6 +460,11 @@ function toggleToolClass() {
 		tool.classList.add("bg-gray-300");
 	}
 }
+
+/** @param {Event} e */
+colorPicker.onchange = (e) => {
+	selectedColor = e.target.value;
+};
 
 penTool.onclick = () => {
 	selectedTool = "pen";
@@ -498,7 +495,3 @@ bucketTool.onclick = () => {
 	toggleToolClass();
 	bucketTool.classList.add("bg-gray-400");
 };
-blueBrush.onclick = () => (selectedColor = "#4a7fb5");
-redBrush.onclick = () => (selectedColor = "#b54a4a");
-whiteBrush.onclick = () => (selectedColor = "#ffffff");
-blackBrush.onclick = () => (selectedColor = "#000000");
