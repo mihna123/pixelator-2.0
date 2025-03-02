@@ -13,7 +13,7 @@ The second pixelator project. The first one got scraped becouse it got too compl
 - [ ] Add exporting
 - [ ] Add transparency
 - [ ] Fix the damn rectangle artifacts
-- [ ] Add full color pallete 
+- [x] Add full color pallete 
 - [ ] Add more layers
 - [ ] Add frames
 
