@@ -28,6 +28,9 @@ const squareTool = document.getElementById("square-tool");
 /** @type {HTMLButtonElement} */
 const moveTool = document.getElementById("move-tool");
 
+/** @type {HTMLButtonElement} */
+const bucketTool = document.getElementById("bucket-tool");
+
 /**
  * Number of pixels is the x axis
  * */
@@ -65,7 +68,7 @@ let selectedColor = "#000000";
 
 /**
  * Tool we are editing the selected layer with currently.
- * @type {("pen"|"line"|"square"|"move")}
+ * @type {("pen"|"line"|"square"|"move"|"bucket")}
  * */
 let selectedTool = "pen";
 
@@ -143,6 +146,9 @@ function onMouseDown(e) {
 			break;
 		case "move":
 			memorisePastClick(e);
+			break;
+		case "bucket":
+			paintPixelsInColorArea(e);
 			break;
 	}
 }
@@ -316,6 +322,81 @@ function colorSquareUnderMouse(e) {
 }
 
 /**
+ *  Queue linear Flood-fill (node, target-color, replacement-color):
+ *   1. Set Q to the empty queue.
+ *   2. If the color of node is not equal to target-color, return.
+ *   3. Add node to Q.
+ *   4. For each element n of Q:
+ *   5.     If the color of n is equal to target-color:
+ *   6.         Set w and e equal to n.
+ *   7.         Move w to the west until the color of the node to the west of w no longer matches target-color.
+ *   8.         Move e to the east until the color of the node to the east of e no longer matches target-color.
+ *   9.         Set the color of nodes between w and e to replacement-color.
+ *  10.         For each node n between w and e:
+ *  11.             If the color of the node to the north of n is target-color, add that node to Q.
+ *  12.             If the color of the node to the south of n is target-color, add that node to Q.
+ *  13. Continue looping until Q is exhausted.
+ *  14. Return.
+ *  @param {MouseEvent} event
+ */
+function paintPixelsInColorArea(event) {
+	const [x, y] = getPixelXY(event);
+	if (x >= PIXELS_X || y >= PIXELS_Y) return;
+
+	// Color that we want to change into replacement color (selectedColor)
+	const targetColor = selectedLayer[x][y].color;
+	// If the color that we want to change is the same as selected, nothing to do here then
+	if (targetColor === selectedColor) return;
+
+	const q = [[x, y]];
+
+	while (q.length > 0) {
+		const [col, row] = q.pop();
+		// if not target, continue onto the next
+		if (selectedLayer[col][row].color !== targetColor) continue;
+		// Color node
+		selectedLayer[col][row].color = selectedColor;
+		// North node
+		let n = row - 1;
+		// South node
+		let s = row + 1;
+		if (n >= 0) {
+			q.push([col, n]);
+		}
+
+		if (s < PIXELS_Y) {
+			q.push([col, s]);
+		}
+		// West node
+		let w = col - 1;
+		while (selectedLayer[w][row].color === targetColor) {
+			selectedLayer[w][row].color = selectedColor;
+			if (row - 1 >= 0) {
+				q.push([w, row - 1]);
+			}
+			if (row + 1 < PIXELS_Y) {
+				q.push([w, row + 1]);
+			}
+			--w;
+			if (w < 0) break;
+		}
+		// East node
+		let e = col + 1;
+		while (selectedLayer[e][row].color === targetColor) {
+			selectedLayer[e][row].color = selectedColor;
+			if (row - 1 >= 0) {
+				q.push([e, row - 1]);
+			}
+			if (row + 1 < PIXELS_Y) {
+				q.push([e, row + 1]);
+			}
+			++e;
+			if (e >= PIXELS_X) break;
+		}
+	}
+}
+
+/**
  * Moves the selected layer's pixels based on mouse movement
  * @param {MouseEvent} e
  */
@@ -382,7 +463,7 @@ canvas.addEventListener("mousedown", onMouseDown);
 canvas.addEventListener("mousemove", onMouseMove);
 
 function toggleToolClass() {
-	for (var tool of [penTool, lineTool, squareTool, moveTool]) {
+	for (var tool of [penTool, lineTool, squareTool, moveTool, bucketTool]) {
 		tool.classList.remove("bg-gray-400");
 		tool.classList.add("bg-gray-300");
 	}
@@ -399,17 +480,24 @@ lineTool.onclick = () => {
 	toggleToolClass();
 	lineTool.classList.add("bg-gray-400");
 };
+
 squareTool.onclick = () => {
 	selectedTool = "square";
 	toggleToolClass();
 	squareTool.classList.add("bg-gray-400");
 };
+
 moveTool.onclick = () => {
 	selectedTool = "move";
 	toggleToolClass();
 	moveTool.classList.add("bg-gray-400");
 };
 
+bucketTool.onclick = () => {
+	selectedTool = "bucket";
+	toggleToolClass();
+	bucketTool.classList.add("bg-gray-400");
+};
 blueBrush.onclick = () => (selectedColor = "#4a7fb5");
 redBrush.onclick = () => (selectedColor = "#b54a4a");
 whiteBrush.onclick = () => (selectedColor = "#ffffff");
