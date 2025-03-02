@@ -1,16 +1,49 @@
 name: Build tailwind
 
-on: [push, pull_request]
+on:
+  push:
+    branches: ["master"]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Install dependencies
-      run: npm install
-    - name: Build Tailwind CSS
-      run: mkdir build && npx @tailwindcss/cli -i input.css -o build/style.css
-    - name: Copy files
-      run: cp app.js index.html ./build
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build tailwindcss
+        run: mkdir build && npx @tailwindcss/cli -i input.css -o build/style.css
+
+      - name: Copy files to build directory
+        run: cp app.js index.html ./build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Deploy to Github Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
