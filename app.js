@@ -25,6 +25,9 @@ const lineTool = document.getElementById("line-tool");
 /** @type {HTMLButtonElement} */
 const squareTool = document.getElementById("square-tool");
 
+/** @type {HTMLButtonElement} */
+const moveTool = document.getElementById("move-tool");
+
 /**
  * Number of pixels is the x axis
  * */
@@ -44,19 +47,54 @@ const PIXEL_WIDTH = Number(canvas.width) / PIXELS_X;
 const PIXELS_HEIGHT = Number(canvas.height) / PIXELS_Y;
 
 const layer = createNewLayer();
+const layers = [layer];
 setInterval(() => {
-	draw([layer]);
+	draw(layers);
 }, 50);
 
 // Utility functions and variables
 
+/** To know if the mouse is pressed for mousemove events */
 let mousePressed = false;
+
+/** Layer that we are currently editing */
 let selectedLayer = layer;
+
+/** Color we are currently using to edit with */
 let selectedColor = "#000000";
+
+/**
+ * Tool we are editing the selected layer with currently.
+ * @type {("pen"|"line"|"square"|"move")}
+ * */
 let selectedTool = "pen";
+
+/**
+ * Point to memorise where the user clicked. For example when moving we need
+ * to know where user clicked befre the move started
+ * @type {[number, number]}
+ * */
 const pastClick = [0, 0];
+
+/**
+ * Buffer where the last line is stored when using the line tool.
+ * This way we can remove line from selected layer on the next frame.
+ * @type {number[]}
+ * */
 let pastTempLine = [];
+
+/**
+ * Buffer where the last square is stored when using the square tool.
+ * This way we can remove square from selected layer on the next frame.
+ * @type {number[]}
+ * */
 let pastTempSquare = [];
+
+/** The buffer to remember state before changes */
+let originalBuffer = [];
+
+/** To know if we are moving already. Mostly used for the moving tool */
+let isMoving = false;
 
 /**
  * @param {any[][][]} layers
@@ -103,6 +141,9 @@ function onMouseDown(e) {
 		case "square":
 			memorisePastClick(e);
 			break;
+		case "move":
+			memorisePastClick(e);
+			break;
 	}
 }
 
@@ -113,6 +154,10 @@ function onMouseUp(e) {
 	mousePressed = false;
 	pastTempLine = [];
 	pastTempSquare = [];
+	if (selectedTool === "move") {
+		isMoving = false;
+		originalBuffer = [];
+	}
 }
 
 /**
@@ -132,6 +177,8 @@ function onMouseMove(e) {
 		case "square":
 			colorSquareUnderMouse(e);
 			break;
+		case "move":
+			movePixelsUnderMouse(e);
 	}
 }
 
@@ -191,17 +238,19 @@ function calculateRectangle(x1, y1, x2, y2) {
 	const left = calculateLine(minX, minY, minX, maxY); // ↑
 
 	// Remove duplicate points at corners
-	return [...top, ...right.slice(1), ...bottom.slice(1), ...left.slice(1)];
+	const rect = [
+		...top.slice(1),
+		...right.slice(1),
+		...bottom.slice(1),
+		...left.slice(1),
+	];
+	return rect;
 }
 /**
  * @param {MouseEvent} e
  * */
 function colorPixelUnderMouse(e) {
-	const canvasRect = canvas.getBoundingClientRect();
-	const canvasX = e.x - canvasRect.x;
-	const canvasY = e.y - canvasRect.y;
-	const pixelX = Math.floor(canvasX / PIXEL_WIDTH);
-	const pixelY = Math.floor(canvasY / PIXELS_HEIGHT);
+	const [pixelX, pixelY] = getPixelXY(e);
 	if (pixelX >= PIXELS_X || pixelY >= PIXELS_Y) return;
 	selectedLayer[pixelX][pixelY].color = selectedColor;
 }
@@ -210,11 +259,7 @@ function colorPixelUnderMouse(e) {
  * @param {MouseEvent} e
  * */
 function memorisePastClick(e) {
-	const canvasRect = canvas.getBoundingClientRect();
-	const canvasX = e.x - canvasRect.x;
-	const canvasY = e.y - canvasRect.y;
-	const pixelX = Math.floor(canvasX / PIXEL_WIDTH);
-	const pixelY = Math.floor(canvasY / PIXELS_HEIGHT);
+	const [pixelX, pixelY] = getPixelXY(e);
 	if (pixelX >= PIXELS_X || pixelY >= PIXELS_Y) return;
 	pastClick[0] = pixelX;
 	pastClick[1] = pixelY;
@@ -224,11 +269,7 @@ function memorisePastClick(e) {
  * @param {MouseEvent} e
  * */
 function colorLineUnderMouse(e) {
-	const canvasRect = canvas.getBoundingClientRect();
-	const canvasX = e.x - canvasRect.x;
-	const canvasY = e.y - canvasRect.y;
-	const pixelX = Math.floor(canvasX / PIXEL_WIDTH);
-	const pixelY = Math.floor(canvasY / PIXELS_HEIGHT);
+	const [pixelX, pixelY] = getPixelXY(e);
 	if (pixelX >= PIXELS_X || pixelY >= PIXELS_Y) return;
 
 	// Generate a new line
@@ -253,14 +294,10 @@ function colorLineUnderMouse(e) {
  * @param {MouseEvent} e
  * */
 function colorSquareUnderMouse(e) {
-	const canvasRect = canvas.getBoundingClientRect();
-	const canvasX = e.x - canvasRect.x;
-	const canvasY = e.y - canvasRect.y;
-	const pixelX = Math.floor(canvasX / PIXEL_WIDTH);
-	const pixelY = Math.floor(canvasY / PIXELS_HEIGHT);
+	const [pixelX, pixelY] = getPixelXY(e);
 	if (pixelX >= PIXELS_X || pixelY >= PIXELS_Y) return;
 
-	// Generate a new line
+	// Generate a new square
 	const square = calculateRectangle(...pastClick, pixelX, pixelY);
 
 	// Remove the old square
@@ -269,15 +306,74 @@ function colorSquareUnderMouse(e) {
 			selectedLayer[x][y].color = color;
 		}
 	}
-	pastTempSquare = [];
 
 	// Draw the new square and memorise it for removal
-	for (const [x, y] of square) {
-		pastTempSquare.push({ x, y, color: selectedLayer[x][y].color });
+	pastTempSquare = square.map(([x, y]) => {
+		const color = selectedLayer[x][y].color;
 		selectedLayer[x][y].color = selectedColor;
+		return { x, y, color };
+	});
+}
+
+/**
+ * Moves the selected layer's pixels based on mouse movement
+ * @param {MouseEvent} e
+ */
+function movePixelsUnderMouse(e) {
+	const [pixelX, pixelY] = getPixelXY(e);
+	if (pixelX >= PIXELS_X || pixelY >= PIXELS_Y) return;
+
+	if (!isMoving) {
+		// If first move, just capture state before moving
+		isMoving = true;
+		originalBuffer = selectedLayer.map((row) =>
+			row.map((pixel) => ({ ...pixel })),
+		);
+		return;
+	}
+
+	// Calculate movement delta from initial click position
+	const [dx, dy] = [pixelX - pastClick[0], pixelY - pastClick[1]];
+
+	// Clear selected layer
+	clearLayer(selectedLayer);
+	for (let x = 0; x < PIXELS_X; ++x) {
+		for (let y = 0; y < PIXELS_Y; ++y) {
+			const newX = x + dx;
+			const newY = y + dy;
+
+			if (
+				newX >= 0 &&
+				newX < PIXELS_X &&
+				newY >= 0 &&
+				newY < PIXELS_Y &&
+				originalBuffer[x][y].color !== "#ffffff"
+			) {
+				selectedLayer[newX][newY] = { ...originalBuffer[x][y] };
+			}
+		}
 	}
 }
 
+/** Helper function to clear a layer */
+function clearLayer(layer) {
+	for (let i = 0; i < PIXELS_X; i++) {
+		for (let j = 0; j < PIXELS_Y; j++) {
+			layer[i][j] = { color: "#ffffff" }; // Or appropriate empty value
+		}
+	}
+}
+/**
+ * @param {MouseEvent} e
+ * */
+function getPixelXY(e) {
+	const canvasRect = canvas.getBoundingClientRect();
+	const canvasX = e.x - canvasRect.x;
+	const canvasY = e.y - canvasRect.y;
+	const pixelX = Math.floor(canvasX / PIXEL_WIDTH);
+	const pixelY = Math.floor(canvasY / PIXELS_HEIGHT);
+	return [pixelX, pixelY];
+}
 // Event listeners
 
 document.addEventListener("mouseup", onMouseUp);
@@ -286,7 +382,7 @@ canvas.addEventListener("mousedown", onMouseDown);
 canvas.addEventListener("mousemove", onMouseMove);
 
 function toggleToolClass() {
-	for (var tool of [penTool, lineTool, squareTool]) {
+	for (var tool of [penTool, lineTool, squareTool, moveTool]) {
 		tool.classList.remove("bg-gray-400");
 		tool.classList.add("bg-gray-300");
 	}
@@ -307,6 +403,11 @@ squareTool.onclick = () => {
 	selectedTool = "square";
 	toggleToolClass();
 	squareTool.classList.add("bg-gray-400");
+};
+moveTool.onclick = () => {
+	selectedTool = "move";
+	toggleToolClass();
+	moveTool.classList.add("bg-gray-400");
 };
 
 blueBrush.onclick = () => (selectedColor = "#4a7fb5");

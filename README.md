@@ -8,7 +8,9 @@ The second pixelator project. The first one got scraped becouse it got too compl
 - [x] Add pen tool
 - [x] Add line tool
 - [x] Add rectangle tool
-- [ ] Add move tool
+- [x] Add move tool
 - [ ] Add bucket tool 
 - [ ] Add exporting
+- [ ] Add transparency
+- [ ] Fix the damn rectangle artifacts
 
