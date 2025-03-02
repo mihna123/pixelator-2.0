@@ -22,6 +22,9 @@ const moveTool = document.getElementById("move-tool");
 /** @type {HTMLButtonElement} */
 const bucketTool = document.getElementById("bucket-tool");
 
+/** @type {HTMLButtonElement} */
+const colorDropperTool = document.getElementById("color-dropper-tool");
+
 /**
  * Number of pixels is the x axis
  * */
@@ -59,7 +62,7 @@ let selectedColor = colorPicker.value;
 
 /**
  * Tool we are editing the selected layer with currently.
- * @type {("pen"|"line"|"square"|"move"|"bucket")}
+ * @type {("pen"|"line"|"square"|"move"|"bucket"|"color")}
  * */
 let selectedTool = "pen";
 
@@ -140,6 +143,9 @@ function onMouseDown(e) {
 			break;
 		case "bucket":
 			paintPixelsInColorArea(e);
+			break;
+		case "color":
+			getColor(e);
 			break;
 	}
 }
@@ -388,6 +394,19 @@ function paintPixelsInColorArea(event) {
 }
 
 /**
+ * Gets the color of the pixel where the mouse is
+ * @param {MouseEvent} e
+ */
+function getColor(e) {
+	const [x, y] = getPixelXY(e);
+	if (x >= PIXELS_X || y >= PIXELS_Y) return;
+
+	const color = selectedLayer[x][y].color;
+	colorPicker.value = color;
+	selectedColor = color;
+}
+
+/**
  * Moves the selected layer's pixels based on mouse movement
  * @param {MouseEvent} e
  */
@@ -455,7 +474,14 @@ canvas.addEventListener("mousedown", onMouseDown);
 canvas.addEventListener("mousemove", onMouseMove);
 
 function toggleToolClass() {
-	for (var tool of [penTool, lineTool, squareTool, moveTool, bucketTool]) {
+	for (var tool of [
+		penTool,
+		lineTool,
+		squareTool,
+		moveTool,
+		bucketTool,
+		colorDropperTool,
+	]) {
 		tool.classList.remove("bg-gray-400");
 		tool.classList.add("bg-gray-300");
 	}
@@ -494,4 +520,10 @@ bucketTool.onclick = () => {
 	selectedTool = "bucket";
 	toggleToolClass();
 	bucketTool.classList.add("bg-gray-400");
+};
+
+colorDropperTool.onclick = () => {
+	selectedTool = "color";
+	toggleToolClass();
+	colorDropperTool.classList.add("bg-gray-400");
 };
