@@ -37,7 +37,7 @@ export function handleMouseMove(e) {
 			workingLayer[x][y].color = color;
 		}
 	}
-
+	state.shouldClear = true;
 	// Draw the new square and memorise it for removal
 	state.pastTempSquare = square.map(([x, y]) => {
 		const color = workingLayer[x][y].color;
