@@ -10,7 +10,7 @@ const state = {
 	canvas: document.getElementById("canvasElement"),
 	/**
 	 * Tool we are editing the selected layer with currently.
-	 * @type {("pen"|"line"|"square"|"move"|"bucket"|"color")}
+	 * @type {("pen"|"line"|"square"|"move"|"bucket"|"color"|"eraser")}
 	 * */
 	selectedTool: "pen",
 	/**

@@ -21,62 +21,69 @@
 
 <body>
 
-    <h1 class="text-2xl ml-2"><b>Pixelator 2.0</b></h1>
+    <h1 class="text-2xl bg-gray-600 text-white p-2"><b>Pixelator 2.0</b></h1>
     <div class="flex justify-center">
-        <div class="border-2 rounded border-black m-2 flex flex-col h-fit">
-            <button data-tool="pen" class="flex justify-center border rounded bg-gray-400 m-1 hover:bg-gray-400 p-2"
+        <div class="m-2 bg-gray-600 flex flex-col h-fit">
+            <button data-tool="pen" title="Pen tool"
+                class="w-10 h-10 flex justify-center items-center border-2 border-amber-300 bg-gray-900 text-white m-1 hover:bg-gray-800 p-2"
                 id="pen-tool">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                     <path fill="currentColor"
                         d="M22 7.24a1 1 0 0 0-.29-.71l-4.24-4.24a1 1 0 0 0-.71-.29a1 1 0 0 0-.71.29l-2.83 2.83L2.29 16.05a1 1 0 0 0-.29.71V21a1 1 0 0 0 1 1h4.24a1 1 0 0 0 .76-.29l10.87-10.93L21.71 8a1.19 1.19 0 0 0 .22-.33a1 1 0 0 0 0-.24a.7.7 0 0 0 0-.14ZM6.83 20H4v-2.83l9.93-9.93l2.83 2.83ZM18.17 8.66l-2.83-2.83l1.42-1.41l2.82 2.82Z" />
                 </svg>
             </button>
-            <button data-tool="line" class="flex justify-center border rounded bg-gray-300 m-1 hover:bg-gray-400 p-2"
+            <button data-tool="line" title="Line tool"
+                class="w-10 h-10 flex justify-center items-center bg-gray-900 text-white m-1 hover:bg-gray-800 p-2"
                 id="line-tool">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 2048 2048">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 2048 2048">
                     <path fill="currentColor" d="m2029 1939l-90 90L19 109l90-90l1920 1920z" />
                 </svg>
             </button>
-            <button data-tool="square" class="flex justify-center border rounded bg-gray-300 m-1 hover:bg-gray-400 p-2"
+            <button data-tool="square" title="Rectangle tool"
+                class="w-10 h-10 flex justify-center items-center bg-gray-900 text-white m-1 hover:bg-gray-800 p-2"
                 id="square-tool">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                     <path fill="currentColor" d="M2 2h20v20H2V2Zm2 2v16h16V4H4Z" />
                 </svg>
             </button>
-            <button data-tool="move" class="flex justify-center border rounded bg-gray-300 m-1 hover:bg-gray-400 p-2"
+            <button data-tool="move" title="Move tool"
+                class="w-10 h-10 flex justify-center items-center bg-gray-900 text-white m-1 hover:bg-gray-800 p-2"
                 id="move-tool">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 1024 1025">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 1024 1025">
                     <path fill="currentColor"
                         d="M1013 535L815 699q-11 8-29 5t-18-13V577H575v192h114q10 0 13.5 18t-5.5 29l-164 198q-9 11-21.5 11t-21.5-11L326 816q-9-11-5.5-29t12.5-18h114V577H256v114q0 9-18 12.5t-29-4.5L11 534q-11-9-11-21.5T11 491l198-164q11-9 29-5.5t18 12.5v115h191V256H334q-10 0-13.5-18t5.5-29L490 12q9-12 21.5-12T533 12l164 197q9 11 5.5 29T690 256H575v193h193V335q0-10 18-13.5t29 5.5l198 164q11 9 11 22t-11 22z" />
                 </svg>
             </button>
-            <button data-tool="bucket" class="flex justify-center border rounded bg-gray-300 m-1 hover:bg-gray-400 p-2"
+            <button data-tool="bucket" title="Bucket tool"
+                class="w-10 h-10 flex justify-center items-center bg-gray-900 text-white m-1 hover:bg-gray-800 p-2"
                 id="bucket-tool">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16">
                     <path fill="currentColor" fill-rule="evenodd"
                         d="M11.773 7.412c-.064.064-.27.249-1.017-.027c-.75-.277-1.706-.928-2.695-1.918c-.99-.99-1.64-1.945-1.918-2.695c-.276-.747-.091-.953-.027-1.017c.064-.064.27-.249 1.017.027c.094.035.19.075.29.121c.7.324 1.54.93 2.405 1.797c.99.99 1.641 1.945 1.918 2.695c.276.747.091.953.027 1.017M7 6.528c.85.85 1.738 1.535 2.581 1.972H1.694v-.027a1.292 1.292 0 0 1 .1-.507l2.802-4.33c.056-.087.114-.174.172-.26C5.16 4.383 5.956 5.485 7 6.529Zm3.89-3.889c2.147 2.148 3.24 4.537 1.944 5.834a12.976 12.976 0 0 1-2.127 1.719L6.352 13.01s-1.945 1.296-4.537-1.296C-.778 9.12.518 7.175.518 7.175L3.336 2.82A12.98 12.98 0 0 1 5.056.694C6.351-.602 8.74.491 10.888 2.64Zm1.86 12.36c.966 0 1.75-.765 1.75-1.71c0-1.234-1.17-2.76-1.512-3.178a.304.304 0 0 0-.237-.111a.31.31 0 0 0-.24.112c-.34.422-1.511 1.96-1.511 3.178c0 .944.784 1.71 1.75 1.71Z"
                         clip-rule="evenodd" />
                 </svg>
             </button>
-            <button data-tool="color" class="flex justify-center border rounded bg-gray-300 m-1 hover:bg-gray-400 p-2"
+            <button data-tool="color" title="Color picker"
+                class="w-10 h-10 flex justify-center items-center bg-gray-900 text-white m-1 hover:bg-gray-800 p-2"
                 id="color-dropper-tool">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 26 26">
+                <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 26 26">
                     <path fill="currentColor"
                         d="M21.625 0a4.36 4.36 0 0 0-3.094 1.281l-3.093 3.094l-.688-.688a.972.972 0 0 0-1.375 0L11.312 5.75a.972.972 0 0 0 0 1.375l.657.656l-6.875 6.875c-1.071 1.07-1.675 1.865-2.063 2.563c-.387.697-.508 1.32-.594 1.75c-.085.43-.149.693-.406 1.156c-.257.463-.758 1.102-1.75 2.094a1 1 0 0 0 0 1.437l2.063 2.063a1 1 0 0 0 1.437 0c.992-.992 1.631-1.493 2.094-1.75c.463-.257.727-.32 1.156-.407c.43-.085 1.053-.206 1.75-.593c.698-.388 1.492-.992 2.563-2.063c1.252-1.25 5.935-5.935 6.875-6.875l.656.656c.38.38.995.38 1.375 0l2.063-2.062a.97.97 0 0 0 0-1.375l-.688-.688l3.094-3.093A4.375 4.375 0 0 0 21.625 0zm-8.25 9.25l3.375 3.375l-6.844 6.844c-.992.992-1.662 1.493-2.125 1.75c-.462.257-.695.32-1.125.406c-.43.086-1.052.206-1.75.594c-.48.267-1.148.845-1.781 1.406l-.75-.75c.56-.633 1.139-1.3 1.406-1.781c.388-.698.508-1.32.594-1.75c.086-.43.15-.694.406-1.157c.257-.462.758-1.101 1.75-2.093l6.844-6.844z" />
                 </svg>
             </button>
-            <button data-tool="eraser" class="flex justify-center border rounded bg-gray-300 m-1 hover:bg-gray-400 p-2"
+            <button data-tool="eraser" title="Eraser tool"
+                class="w-10 h-10 flex justify-center items-center bg-gray-900 text-white m-1 hover:bg-gray-800 p-2"
                 id="eraser-tool">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 2048 2048">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 2048 2048">
                     <path fill="currentColor"
                         d="M1115 1792h421v128H453L50 1516q-24-24-37-56t-13-68q0-35 13-67t38-58L1248 69l794 795l-927 928zm133-1542L538 960l614 613l709-709l-613-614zM933 1792l128-128l-613-614l-306 307q-14 14-14 35t14 35l364 365h427z" />
                 </svg>
             </button>
-            <div class="border-2 rounded border-black m-1 flex flex-col h-fit">
-                <input class="w-10" type="color" id="color-picker" value="#ff0000" />
+            <div class="m-1 flex flex-col h-fit">
+                <input class="w-10 h-10" type="color" id="color-picker" value="#000" />
             </div>
         </div>
-        <canvas id="canvasElement" class="border-2 m-2 rounded border-black" width="600" height="600">
+        <canvas id="canvasElement" class="m-2" width="600" height="600">
             Your browser does not support the canvas element
         </canvas>
     </div>
