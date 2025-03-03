@@ -52,10 +52,3 @@ const state = {
 export function getState() {
 	return state;
 }
-
-/**
- * Helper to retreive working layer
- * */
-export function getWorkingLayer() {
-	return state.layers[state.layerIndex];
-}

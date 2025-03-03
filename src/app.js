@@ -1,5 +1,5 @@
 import { settupTools } from "./components/tools-ui.js";
-import { initialiseRenderer } from "./core/cavas/render.js";
+import { initialiseRenderer } from "./core/canvas/render.js";
 import { setupEventListenets } from "./core/events/handlers.js";
 import { getState } from "./core/state/shared-state.js";
 
