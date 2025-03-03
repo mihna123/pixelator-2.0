@@ -38,7 +38,7 @@ export function createNewLayer() {
 		layer.push([]);
 		for (let j = 0; j < PIXELS_Y; ++j) {
 			layer[i][j] = {};
-			layer[i][j].color = "#ffffff";
+			layer[i][j].color = "#0000";
 		}
 	}
 	return layer;
