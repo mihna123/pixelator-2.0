@@ -29,7 +29,7 @@ jobs:
         run: mkdir build && npx @tailwindcss/cli -i src/input.css -o build/style.css
 
       - name: Copy src files to build directory
-        run: cp -r src/ ./build
+        run: cp -r src/* ./build && rm build/input.css
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
