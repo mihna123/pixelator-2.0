@@ -38,6 +38,7 @@ export function handleMouseMove(e) {
 		}
 	}
 	state.pastTempLine = [];
+	state.shouldClear = true;
 
 	// Draw the new line and memorise it for removal
 	for (const [x, y] of line) {
