@@ -8,6 +8,7 @@ const tools = [
 	document.getElementById("square-tool"),
 	document.getElementById("line-tool"),
 	document.getElementById("pen-tool"),
+	document.getElementById("eraser-tool"),
 ];
 
 /**
