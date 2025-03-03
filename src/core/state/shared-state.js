@@ -47,6 +47,8 @@ const state = {
 	originalBuffer: [],
 	/** To know if we are moving already. Mostly used for the moving tool */
 	isMoving: false,
+	/** Tells the renderer if the canvas should be cleared on the next frame */
+	shouldClear: false,
 };
 
 export function getState() {

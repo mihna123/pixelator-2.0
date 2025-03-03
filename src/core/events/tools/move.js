@@ -57,7 +57,7 @@ export function handleMouseMove(e) {
 				newX < PIXELS_X &&
 				newY >= 0 &&
 				newY < PIXELS_Y &&
-				state.originalBuffer[x][y].color !== "#ffffff"
+				state.originalBuffer[x][y].color !== "#0000"
 			) {
 				workingLayer[newX][newY] = { ...state.originalBuffer[x][y] };
 			}

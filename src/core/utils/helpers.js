@@ -22,9 +22,12 @@ export function getPixelXY(e) {
 
 /** Helper function to clear a layer */
 export function clearLayer(layer) {
+	const state = getState();
+	state.shouldClear = true;
+
 	for (let i = 0; i < PIXELS_X; i++) {
 		for (let j = 0; j < PIXELS_Y; j++) {
-			layer[i][j] = { color: "#ffffff" }; // Or appropriate empty value
+			layer[i][j] = { color: "#0000" }; // Or appropriate empty value
 		}
 	}
 }
@@ -35,7 +38,7 @@ export function createNewLayer() {
 		layer.push([]);
 		for (let j = 0; j < PIXELS_Y; ++j) {
 			layer[i][j] = {};
-			layer[i][j].color = "#ffffff";
+			layer[i][j].color = "#0000";
 		}
 	}
 	return layer;
