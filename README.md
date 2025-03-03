@@ -1,6 +1,10 @@
 # Pixelator 2.0
 
-The second pixelator project. The first one got scraped becouse it got too complicated
+The second pixelator project. The first one got scraped becouse it got too complicated :D
+
+## Contributions
+
+All contributions are welcome! Currently I would much appriciate bug reports!
 
 ## TODO
 
