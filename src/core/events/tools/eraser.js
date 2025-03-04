@@ -17,6 +17,8 @@ function removePixelUnderMouse(e) {
 	const [col, row] = getPixelXY(e);
 	if (col >= PIXELS_X || row >= PIXELS_Y) return;
 
+	state.shouldDraw = true;
+
 	const state = getState();
 	const workingLayer = getWorkingLayer();
 	const pixelsToRemove = [];
@@ -47,6 +49,7 @@ function removePixelUnderMouse(e) {
 export function handleMouseDown(e) {
 	const state = getState();
 	state.mousePressed = true;
+	state.shouldDraw = true;
 	removePixelUnderMouse(e);
 }
 
@@ -56,6 +59,7 @@ export function handleMouseDown(e) {
 export function handleMouseMove(e) {
 	const state = getState();
 	if (!state.mousePressed) return;
+	state.shouldDraw = true;
 	removePixelUnderMouse(e);
 }
 

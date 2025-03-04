@@ -10,6 +10,7 @@ import { calculateLine } from "../../utils/geometry.js";
 export function handleMouseDown(e) {
 	const state = getState();
 	state.mousePressed = true;
+	state.shouldDraw = true;
 	const [x, y] = getPixelXY(e);
 	if (x >= PIXELS_X || y >= PIXELS_Y) return;
 	state.pastClick = [x, y];
@@ -22,6 +23,8 @@ export function handleMouseDown(e) {
 export function handleMouseMove(e) {
 	const state = getState();
 	if (!state.mousePressed) return;
+
+	state.shouldDraw = true;
 
 	const [col, row] = getPixelXY(e);
 	if (col >= PIXELS_X || row >= PIXELS_Y) return;

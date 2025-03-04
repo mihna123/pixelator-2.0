@@ -1,6 +1,7 @@
 import { createNewLayer } from "../utils/helpers.js";
 
 const layer = createNewLayer();
+const highlightLayer = createNewLayer();
 
 const state = {
 	/**
@@ -8,6 +9,8 @@ const state = {
 	 * @type {HTMLCanvasElement}
 	 * */
 	canvas: document.getElementById("canvasElement"),
+	/** Tells the renderer if if should redraw on the next frame */
+	shouldDraw: false,
 	/**
 	 * Tool we are editing the selected layer with currently.
 	 * @type {("pen"|"line"|"square"|"move"|"bucket"|"color"|"eraser")}
@@ -28,13 +31,14 @@ const state = {
 	 * @type {[number, number]}
 	 * */
 	pastClick: [0, 0],
-
 	/** To know if the mouse is pressed for mousemove events */
 	mousePressed: false,
 	/** Index of the layer that we are currently editing */
 	layerIndex: 0,
 	/** All available layers */
 	layers: [layer],
+	/** Layer used only for highlights */
+	highlightLayer,
 	/**
 	 * Buffer where the last line is stored when using the line tool.
 	 * This way we can remove line from selected layer on the next frame.

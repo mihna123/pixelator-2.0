@@ -16,6 +16,7 @@ All contributions are welcome! Currently I would much appriciate bug reports!
 - [x] Add bucket tool 
 - [x] Add eraser tool
 - [x] Brush sizes
+- [x] Add brush indicator
 - [ ] Add more layers
 - [ ] Add select tool
 - [ ] Add elipse tool
