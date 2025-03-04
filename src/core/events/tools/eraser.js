@@ -1,4 +1,11 @@
-import { getPixelXY, getWorkingLayer } from "../../utils/helpers.js";
+import {
+	getPixelXY,
+	getWorkingLayer,
+	safePush,
+	getArrayForSizeOne,
+	getArrayForSizeTwo,
+	getArrayForSizeThree,
+} from "../../utils/helpers.js";
 import { PIXELS_X, PIXELS_Y } from "../../state/config.js";
 import { getState } from "../../state/shared-state.js";
 
@@ -7,13 +14,30 @@ import { getState } from "../../state/shared-state.js";
  * @param {MouseEvent} e
  * */
 function removePixelUnderMouse(e) {
-	const [pixelX, pixelY] = getPixelXY(e);
-	if (pixelX >= PIXELS_X || pixelY >= PIXELS_Y) return;
+	const [col, row] = getPixelXY(e);
+	if (col >= PIXELS_X || row >= PIXELS_Y) return;
 
 	const state = getState();
 	const workingLayer = getWorkingLayer();
+	const pixelsToRemove = [];
+	switch (state.selectedSize) {
+		case 0:
+			safePush(pixelsToRemove, [col, row]);
+			break;
+		case 1:
+			pixelsToRemove.push(...getArrayForSizeOne(col, row));
+			break;
+		case 2:
+			pixelsToRemove.push(...getArrayForSizeTwo(col, row));
+			break;
+		case 3:
+			pixelsToRemove.push(...getArrayForSizeThree(col, row));
+			break;
+	}
+	for (const [x, y] of pixelsToRemove) {
+		workingLayer[x][y].color = "#0000";
+	}
 
-	workingLayer[pixelX][pixelY].color = "#0000";
 	state.shouldClear = true;
 }
 

@@ -7,6 +7,14 @@ import {
 import { getState } from "../state/shared-state.js";
 
 /**
+ * Helper function that checks if coordinates are valid before pushing
+ * */
+export function safePush(array, [x, y]) {
+	if (x < 0 || x >= PIXELS_X || y < 0 || y > PIXELS_Y) return;
+	array.push([x, y]);
+}
+
+/**
  * Get mouse coordinates in pixels
  * @param {MouseEvent} e
  * */
@@ -50,4 +58,42 @@ export function createNewLayer() {
 export function getWorkingLayer() {
 	const state = getState();
 	return state.layers[state.layerIndex];
+}
+
+/**
+ * Helper function to calculate surounding pixels affected by size 1
+ * */
+export function getArrayForSizeOne(x, y) {
+	const ret = [];
+	safePush(ret, [x, y]);
+	safePush(ret, [x - 1, y]);
+	safePush(ret, [x - 1, y - 1]);
+	safePush(ret, [x, y - 1]);
+	return ret;
+}
+
+/**
+ * Helper function to calculate surounding pixels affected by size 2
+ * */
+export function getArrayForSizeTwo(x, y) {
+	const ret = [];
+	for (let i = -1; i < 2; ++i) {
+		for (let j = -1; j < 2; ++j) {
+			safePush(ret, [x + i, y + j]);
+		}
+	}
+	return ret;
+}
+
+/**
+ * Helper function to calculate surounding pixels affected by size 3
+ * */
+export function getArrayForSizeThree(x, y) {
+	const ret = [];
+	for (let i = -2; i < 2; ++i) {
+		for (let j = -2; j < 2; ++j) {
+			safePush(ret, [x + i, y + j]);
+		}
+	}
+	return ret;
 }
