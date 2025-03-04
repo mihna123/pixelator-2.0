@@ -5,6 +5,7 @@ import * as bucket from "./tools/bucket.js";
 import * as move from "./tools/move.js";
 import * as color from "./tools/color.js";
 import * as eraser from "./tools/eraser.js";
+import * as highlight from "./tools/highlight.js";
 import { getState } from "../state/shared-state.js";
 
 const toolHandlers = {
@@ -22,9 +23,11 @@ export function setupEventListenets() {
 
 	state.canvas.addEventListener("mousedown", (e) => {
 		toolHandlers[state.selectedTool].handleMouseDown(e);
+		highlight.handleMouseDown();
 	});
 	state.canvas.addEventListener("mousemove", (e) => {
 		toolHandlers[state.selectedTool].handleMouseMove(e);
+		highlight.handleMouseMove(e);
 	});
 	document.addEventListener("mouseup", (e) => {
 		toolHandlers[state.selectedTool].handleMouseUp(e);

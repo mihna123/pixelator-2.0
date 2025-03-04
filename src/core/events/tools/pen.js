@@ -46,6 +46,7 @@ function colorPixelUnderMouse(e) {
 export function handleMouseDown(e) {
 	const state = getState();
 	state.mousePressed = true;
+	state.shouldDraw = true;
 	colorPixelUnderMouse(e);
 }
 
@@ -55,6 +56,8 @@ export function handleMouseDown(e) {
 export function handleMouseMove(e) {
 	const state = getState();
 	if (!state.mousePressed) return;
+
+	state.shouldDraw = true;
 	colorPixelUnderMouse(e);
 }
 

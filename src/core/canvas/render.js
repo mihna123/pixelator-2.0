@@ -21,17 +21,20 @@ export function initialiseRenderer(canvas) {
 				state.shouldClear = false;
 			}
 
-			for (const layer of layers) {
-				for (let i = 0; i < PIXELS_X; ++i) {
-					for (let j = 0; j < PIXELS_Y; ++j) {
-						const color = layer[i][j].color;
-						const fillX = i * PIXEL_WIDTH;
-						const fillY = j * PIXEL_HEIGHT;
+			if (state.shouldDraw) {
+				for (const layer of [...layers, state.highlightLayer]) {
+					for (let i = 0; i < PIXELS_X; ++i) {
+						for (let j = 0; j < PIXELS_Y; ++j) {
+							const color = layer[i][j].color;
+							const fillX = i * PIXEL_WIDTH;
+							const fillY = j * PIXEL_HEIGHT;
 
-						ctx.fillStyle = color;
-						ctx.fillRect(fillX, fillY, PIXEL_WIDTH, PIXEL_HEIGHT);
+							ctx.fillStyle = color;
+							ctx.fillRect(fillX, fillY, PIXEL_WIDTH, PIXEL_HEIGHT);
+						}
 					}
 				}
+				state.shouldDraw = false;
 			}
 		},
 	};

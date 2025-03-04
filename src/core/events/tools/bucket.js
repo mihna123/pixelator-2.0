@@ -13,6 +13,8 @@ export function handleMouseDown(e) {
 	const state = getState();
 	const workingLayer = getWorkingLayer();
 
+	state.shouldDraw = true;
+
 	// Color that we want to change into replacement color (selectedColor)
 	const targetColor = workingLayer[x][y].color;
 	// If the color that we want to change is the same as selected, nothing to do here then

@@ -26,6 +26,8 @@ export function handleMouseMove(e) {
 	const state = getState();
 	if (!state.mousePressed) return;
 
+	state.shouldDraw = true;
+
 	const [col, row] = getPixelXY(e);
 	if (col >= PIXELS_X || row >= PIXELS_Y) return;
 

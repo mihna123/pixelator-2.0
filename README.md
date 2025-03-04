@@ -12,7 +12,7 @@ The second pixelator project. The first one got scraped becouse it got too compl
 - [x] Add bucket tool 
 - [x] Add eraser tool
 - [x] Brush sizes
-- [ ] Add brush indicator
+- [x] Add brush indicator
 - [ ] Add more layers
 - [ ] Add select tool
 - [ ] Add elipse tool
