@@ -19,6 +19,10 @@ const state = {
 	 * */
 	selectedColor: document.getElementById("color-picker").value,
 	/**
+	 * Currently selected size used for brush
+	 * */
+	selectedSize: 0,
+	/**
 	 * Point to memorise where the user clicked. For example when moving we need
 	 * to know where user clicked befre the move started
 	 * @type {[number, number]}
