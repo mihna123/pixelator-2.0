@@ -17,9 +17,9 @@ function removePixelUnderMouse(e) {
 	const [col, row] = getPixelXY(e);
 	if (col >= PIXELS_X || row >= PIXELS_Y) return;
 
+	const state = getState();
 	state.shouldDraw = true;
 
-	const state = getState();
 	const workingLayer = getWorkingLayer();
 	const pixelsToRemove = [];
 	switch (state.selectedSize) {
