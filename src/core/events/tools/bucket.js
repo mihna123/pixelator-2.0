@@ -41,7 +41,7 @@ export function handleMouseDown(e) {
 		}
 		// West node
 		let w = col - 1;
-		while (workingLayer[w][row].color === targetColor) {
+		while (workingLayer[w] && workingLayer[w][row].color === targetColor) {
 			workingLayer[w][row].color = state.selectedColor;
 			if (row - 1 >= 0) {
 				q.push([w, row - 1]);
@@ -54,7 +54,7 @@ export function handleMouseDown(e) {
 		}
 		// East node
 		let e = col + 1;
-		while (workingLayer[e][row].color === targetColor) {
+		while (workingLayer[e] && workingLayer[e][row].color === targetColor) {
 			workingLayer[e][row].color = state.selectedColor;
 			if (row - 1 >= 0) {
 				q.push([e, row - 1]);
