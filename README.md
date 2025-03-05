@@ -17,10 +17,12 @@ All contributions are welcome! Currently I would much appriciate bug reports!
 - [x] Add eraser tool
 - [x] Brush sizes
 - [x] Add brush indicator
+- [ ] Add undo and redo
+- [ ] Shortkeys
 - [ ] Add more layers
 - [ ] Add select tool
 - [ ] Add elipse tool
-- [ ] Add exporting
+- [x] Add exporting
 - [x] Add transparency
 - [ ] Fix the damn rectangle artifacts
 - [x] Add full color pallete 
