@@ -28,7 +28,7 @@ All contributions are welcome! Currently I would much appriciate bug reports!
 - [x] Add full color pallete 
 - [x] Add frames
 - [ ] Upgrade export options
-- [ ] Add frame deletion
-- [ ] Add frame copy
-- [ ] Add frame move
+- [x] Add frame deletion
+- [x] Add frame copy
+- [x] Add frame move
 
