@@ -1,41 +1,45 @@
-import {
-	PIXELS_X,
-	PIXELS_Y,
-	PIXEL_HEIGHT,
-	PIXEL_WIDTH,
-} from "../state/config.js";
-import { getState } from "../state/shared-state.js";
+import { PIXELS_X, PIXELS_Y } from "../state/config.js";
 
 /**
  * Get a renderer object
- * @param {HTMLCanvasElement} canvas
+ * @param {Object} state
  * */
-export function initialiseRenderer(canvas) {
-	const ctx = canvas.getContext("2d");
-
+export function initialiseRenderer(state) {
 	return {
 		draw: (layers) => {
-			const state = getState();
+			const ctx = state.canvas.getContext("2d");
 			if (state.shouldClear) {
-				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				ctx.clearRect(0, 0, state.canvas.width, state.canvas.height);
 				state.shouldClear = false;
 			}
 
+			const pixelWidth = state.canvas.width / PIXELS_X;
+			const pixelHeight = state.canvas.height / PIXELS_Y;
+
 			if (state.shouldDraw) {
-				for (const layer of [...layers, state.highlightLayer]) {
+				for (const layer of layers) {
 					for (let i = 0; i < PIXELS_X; ++i) {
 						for (let j = 0; j < PIXELS_Y; ++j) {
 							const color = layer[i][j].color;
-							const fillX = i * PIXEL_WIDTH;
-							const fillY = j * PIXEL_HEIGHT;
+							const fillX = i * pixelWidth;
+							const fillY = j * pixelHeight;
 
 							ctx.fillStyle = color;
-							ctx.fillRect(fillX, fillY, PIXEL_WIDTH, PIXEL_HEIGHT);
+							ctx.fillRect(
+								fillX - 0.5,
+								fillY - 0.5,
+								pixelWidth + 0.5,
+								pixelHeight + 0.5,
+							);
 						}
 					}
 				}
 				state.shouldDraw = false;
 			}
 		},
+		/**
+		 * Returns a renderer that
+		 * */
+		animate: (frames) => {},
 	};
 }

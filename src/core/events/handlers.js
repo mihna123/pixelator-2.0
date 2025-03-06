@@ -6,7 +6,11 @@ import * as move from "./tools/move.js";
 import * as color from "./tools/color.js";
 import * as eraser from "./tools/eraser.js";
 import * as highlight from "./tools/highlight.js";
-import { getState } from "../state/shared-state.js";
+import {
+	getFramesState,
+	getPreviewState,
+	getState,
+} from "../state/shared-state.js";
 
 const toolHandlers = {
 	pen,
@@ -20,6 +24,8 @@ const toolHandlers = {
 
 export function setupEventListenets() {
 	const state = getState();
+	const framesState = getFramesState();
+	const previewState = getPreviewState();
 
 	state.canvas.addEventListener("mousedown", (e) => {
 		toolHandlers[state.selectedTool].handleMouseDown(e);
@@ -31,6 +37,10 @@ export function setupEventListenets() {
 	});
 	document.addEventListener("mouseup", (e) => {
 		toolHandlers[state.selectedTool].handleMouseUp(e);
+		framesState.shouldClear = true;
+		framesState.shouldDraw = true;
+		previewState.shouldClear = true;
+		previewState.shouldDraw = true;
 	});
 	document.addEventListener("mouseout", (e) => {
 		toolHandlers[state.selectedTool].handleMouseUp(e);

@@ -26,5 +26,5 @@ All contributions are welcome! Currently I would much appriciate bug reports!
 - [x] Add transparency
 - [ ] Fix the damn rectangle artifacts
 - [x] Add full color pallete 
-- [ ] Add frames
+- [x] Add frames
 

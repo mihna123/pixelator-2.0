@@ -41,6 +41,7 @@ export function clearLayer(layer) {
 }
 /** Helper function to create a new layer */
 export function createNewLayer() {
+	/** @type {import("../state/shared-state.js").PixelLayer} */
 	const layer = [];
 	for (let i = 0; i < PIXELS_X; ++i) {
 		layer.push([]);
@@ -57,7 +58,7 @@ export function createNewLayer() {
  * */
 export function getWorkingLayer() {
 	const state = getState();
-	return state.layers[state.layerIndex];
+	return state.frames[state.frameIndex][state.layerIndex];
 }
 
 /**
