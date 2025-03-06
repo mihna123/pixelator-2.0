@@ -27,4 +27,8 @@ All contributions are welcome! Currently I would much appriciate bug reports!
 - [ ] Fix the damn rectangle artifacts
 - [x] Add full color pallete 
 - [x] Add frames
+- [ ] Upgrade export options
+- [ ] Add frame deletion
+- [ ] Add frame copy
+- [ ] Add frame move
 
